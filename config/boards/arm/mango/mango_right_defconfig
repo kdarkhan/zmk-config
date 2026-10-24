@@ -15,7 +15,9 @@ CONFIG_ZMK_RGB_UNDERGLOW_BRT_START=10
 CONFIG_BT_CTLR_TX_PWR_PLUS_8=y
 
 # Displays
-CONFIG_ZMK_DISPLAY=y
+# Off for now: displays are not fitted, and any build with the display
+# enabled hangs at boot on ZMK v0.3 (USB never enumerates).
+CONFIG_ZMK_DISPLAY=n
 
 # Custom Status Screens
 CONFIG_ZMK_DISPLAY_STATUS_SCREEN_BUILT_IN=n
