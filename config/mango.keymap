@@ -1,0 +1,164 @@
+/*
+ * Mango keymap, ported from the kdarkhan Sofle QMK keymap.
+ *
+ * This file overrides the board's keymap in boards/arm/mango/mango.keymap
+ * (ZMK looks in config/ first).
+ *
+ * Key positions:
+ *    0  1  2  3  4  5      6  7  8  9 10 11
+ *   12 13 14 15 16 17     18 19 20 21 22 23
+ *   24 25 26 27 28 29     30 31 32 33 34 35
+ *            36 37 38     39 40 41
+ *   joysticks: left 42-46, right 47-51
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/rgb.h>
+#include <dt-bindings/zmk/pointing.h>
+
+#define BASE  0
+#define SYM   1
+#define NUM   2
+#define FN    3
+#define MOUSE 4
+
+#define KEYS_L 0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29
+#define KEYS_R 6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35
+#define THUMBS 36 37 38 39 40 41
+
+// One-shot mods expire after 5 s, like ONESHOT_TIMEOUT on the Sofle.
+&sk {
+    release-after-ms = <5000>;
+};
+
+/ {
+    behaviors {
+        // Home row mods, equivalent to the Sofle's TAPPING_TERM 200,
+        // QUICK_TAP_TERM 100, FLOW_TAP_TERM 100 and CHORDAL_HOLD: a mod only
+        // activates together with a key on the other hand (or a thumb key).
+        hml: homerow_mods_left {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <100>;
+            require-prior-idle-ms = <100>;
+            hold-trigger-key-positions = <KEYS_R THUMBS>;
+            hold-trigger-on-release;
+            bindings = <&kp>, <&kp>;
+        };
+
+        hmr: homerow_mods_right {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <100>;
+            require-prior-idle-ms = <100>;
+            hold-trigger-key-positions = <KEYS_L THUMBS>;
+            hold-trigger-on-release;
+            bindings = <&kp>, <&kp>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        /*
+         * BASE
+         * TAB/NUM  Q    W    E    R    T        Y    U    I    O    P    \/MOUSE
+         * ESC/SYM  A⇧   S⌥   D⌃   F◆   G        H    J◆   K⌃   L⌥   ;⇧   '
+         * LSHFT    Z    X    C    V    B        N    M    ,    .    /    RSHFT
+         *                   FN   GUI  SPC      BSPC ENT  DEL
+         * joysticks: left = arrows, right = scroll (untested, directions may be swapped)
+         */
+        base_layer {
+            display-name = "BASE";
+            bindings = <
+    &lt NUM TAB  &kp Q          &kp W         &kp E          &kp R         &kp T        &kp Y     &kp U        &kp I         &kp O         &kp P           &lt MOUSE BSLH
+    &lt SYM ESC  &hml LSHFT A   &hml LALT S   &hml LCTRL D   &hml LGUI F   &kp G        &kp H     &hmr RGUI J  &hmr RCTRL K   &hmr RALT L   &hmr RSHFT SEMI &kp SQT
+    &kp LSHFT    &kp Z          &kp X         &kp C          &kp V         &kp B        &kp N     &kp M        &kp COMMA      &kp DOT       &kp FSLH        &kp RSHFT
+                                              &mo FN         &kp LGUI      &kp SPACE    &kp BSPC  &kp RET      &kp DEL
+
+                 &kp LEFT       &kp UP        &kp RIGHT      &kp DOWN      &none        &none     &msc SCRL_RIGHT &msc SCRL_UP &msc SCRL_LEFT &msc SCRL_DOWN
+            >;
+        };
+
+        /*
+         * SYM (hold ESC) - the Sofle's ADJ1, plus the number row's symbols
+         * UNDO     REFR `    '    "    ~        ^    [    ]    {    }    F12
+         *          HOME -    _    +    %        LEFT DOWN UP   RGHT HOME END
+         * BACK     FWD  !    @    #    $        *    (    )    &    =
+         *                             S-SPC    DEL
+         */
+        sym_layer {
+            display-name = "SYM";
+            bindings = <
+    &kp K_UNDO       &kp C_AC_REFRESH &kp GRAVE &kp SQT   &kp DQT  &kp TILDE      &kp CARET &kp LBKT  &kp RBKT  &kp LBRC  &kp RBRC  &kp F12
+    &trans           &kp C_AC_HOME    &kp MINUS &kp UNDER &kp PLUS &kp PRCNT      &kp LEFT  &kp DOWN  &kp UP    &kp RIGHT &kp HOME  &kp END
+    &kp C_AC_BACK    &kp C_AC_FORWARD &kp EXCL  &kp AT    &kp HASH &kp DLLR       &kp ASTRK &kp LPAR  &kp RPAR  &kp AMPS  &kp EQUAL &trans
+                                                &trans    &trans   &kp LS(SPACE)  &kp DEL   &trans    &trans
+
+                     &trans           &trans    &trans    &trans   &trans         &trans    &trans    &trans    &trans    &trans
+            >;
+        };
+
+        /*
+         * NUM (hold TAB) - the Sofle's ADJ4: one-shot mod combos left, numpad right
+         *                    C+A  C+S              7    8    9    -    PLAY
+         * GUI           G+A  G+S  GUI              4    5    6    *
+         *                                     0    1    2    3    /
+         */
+        num_layer {
+            display-name = "NUM";
+            bindings = <
+    &trans    &trans  &trans         &sk LC(LALT)   &sk LC(LSHFT) &trans        &trans  &kp N7  &kp N8  &kp N9  &kp MINUS &kp C_PP
+    &kp LGUI  &trans  &sk LG(LALT)   &sk LG(LSHFT)  &sk LGUI      &trans        &trans  &kp N4  &kp N5  &kp N6  &kp ASTRK &trans
+    &trans    &trans  &trans         &trans         &trans        &trans        &kp N0  &kp N1  &kp N2  &kp N3  &kp FSLH  &trans
+                                     &trans         &trans        &trans        &trans  &trans  &trans
+
+              &trans  &trans         &trans         &trans        &trans        &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        /*
+         * FN (hold left outer thumb) - the Sofle's ADJ2, F-keys and keyboard controls
+         * TAB   INS  APP            RGB+ USB/BT         F7   F8   F9   F12
+         *       PSCR RGB  EFF  RGB- BTCLR               F4   F5   F6   F11
+         * BOOT  BT0  BT1  BT2  BT3  BT4                 F1   F2   F3   F10  BOOT
+         */
+        fn_layer {
+            display-name = "FN";
+            bindings = <
+    &kp TAB      &kp INS       &kp K_APP       &trans          &rgb_ug RGB_BRI &out OUT_TOG      &trans  &kp F7  &kp F8  &kp F9  &kp F12  &trans
+    &trans       &kp PSCRN     &rgb_ug RGB_TOG &rgb_ug RGB_EFF &rgb_ug RGB_BRD &bt BT_CLR        &trans  &kp F4  &kp F5  &kp F6  &kp F11  &trans
+    &bootloader  &bt BT_SEL 0  &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4      &trans  &kp F1  &kp F2  &kp F3  &kp F10  &bootloader
+                                               &trans          &trans          &trans            &trans  &trans  &trans
+
+                 &trans        &trans          &trans          &trans          &trans            &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        /*
+         * MOUSE (hold \) - the Sofle's ADJ3, plus its media/brightness row
+         *       BRI+ LCLK M-UP RCLK VOL+
+         * CAPS       M-LF M-DN M-RT VOL-
+         *       BRI- WH-D      WH-U MUTE
+         *                 PREV PLAY NEXT
+         */
+        mouse_layer {
+            display-name = "MOUSE";
+            bindings = <
+    &trans    &kp C_BRI_UP  &mkp LCLK       &mmv MOVE_UP    &mkp RCLK        &kp C_VOL_UP     &trans  &trans  &trans  &trans  &trans  &trans
+    &kp CAPS  &trans        &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &kp C_VOL_DN     &trans  &trans  &trans  &trans  &trans  &trans
+    &trans    &kp C_BRI_DN  &msc SCRL_DOWN  &trans          &msc SCRL_UP     &kp C_MUTE       &trans  &trans  &trans  &trans  &trans  &trans
+                                            &kp C_PREV      &kp C_PP         &kp C_NEXT       &trans  &trans  &trans
+
+              &trans        &trans          &trans          &trans           &trans           &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+    };
+};
