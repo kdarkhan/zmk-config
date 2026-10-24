@@ -15,6 +15,11 @@
 include:
   - board: mango_right
   - board: mango_left
+  # Flash to both halves before upgrading to clear old pairings
+  - board: mango_left
+    shield: settings_reset
+    # settings_reset disables BLE; the board still forces split on, which breaks the link
+    cmake-args: -DCONFIG_ZMK_SPLIT=n
 #  - board: nice_nano_v2
 #    shield: corne_right
 #  - board: nice_nano_v2
