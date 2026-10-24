@@ -50,17 +50,20 @@
                 };
         };
 
-        // The ws2812 driver only needs MOSI. SCK used to be set to 0.24, which is
-        // also the display's SCK on spi0, so LED updates clocked into the display.
+        // The ws2812 driver only uses MOSI, but the SPIM still needs an SCK pin or the
+        // LEDs stay dark. SCK used to be 0.24, which is also the display's SCK on spi0,
+        // so LED updates clocked into the display. 0.07 is not broken out on the n!n.
         spi1_default: spi1_default {
                 group1 {
-                        psels = <NRF_PSEL(SPIM_MOSI, 0, 6)>;
+                        psels = <NRF_PSEL(SPIM_MOSI, 0, 6)>,
+                                <NRF_PSEL(SPIM_SCK, 0, 7)>;
                 };
         };
 
         spi1_sleep: spi1_sleep {
                 group1 {
-                        psels = <NRF_PSEL(SPIM_MOSI, 0, 6)>;
+                        psels = <NRF_PSEL(SPIM_MOSI, 0, 6)>,
+                                <NRF_PSEL(SPIM_SCK, 0, 7)>;
                 };
         };
 };
