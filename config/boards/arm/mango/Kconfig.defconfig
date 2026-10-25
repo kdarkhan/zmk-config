@@ -39,6 +39,12 @@ if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 		config SYSTEM_WORKQUEUE_STACK_SIZE
 			default 2048
 
+		# Zephyr's 2048 default is too small for the custom status screen: LVGL
+		# allocations fail and the board hangs at boot. (ZMK only raises it for its
+		# built-in screen.)
+		config LV_Z_MEM_POOL_SIZE
+			default 8192 if ZMK_DISPLAY_STATUS_SCREEN_CUSTOM
+
 		choice LV_FONT_DEFAULT
 			default LV_FONT_DEFAULT_MONTSERRAT_26
 		endchoice
