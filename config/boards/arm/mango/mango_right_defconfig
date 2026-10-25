@@ -7,7 +7,11 @@ CONFIG_PINCTRL=y
 # RGB Underglow
 CONFIG_ZMK_RGB_UNDERGLOW=y
 CONFIG_WS2812_STRIP=y
-CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=y
+# Keep EXT power on when the LEDs turn off: the displays seem to be powered
+# from it too (left display stayed blank after RGB_TOG off/on until a restart).
+CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=n
+# Turn the LEDs off after CONFIG_ZMK_IDLE_TIMEOUT (default 30 s) without input
+CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y
 CONFIG_ZMK_RGB_UNDERGLOW_EFF_START=3
 CONFIG_ZMK_RGB_UNDERGLOW_BRT_START=10
 
