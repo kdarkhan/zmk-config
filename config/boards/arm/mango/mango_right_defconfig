@@ -1,8 +1,9 @@
 CONFIG_BOARD_MANGO_RIGHT=y
 CONFIG_PINCTRL=y
 
-# Deep Sleep
-# CONFIG_ZMK_SLEEP=y
+# Deep Sleep after CONFIG_ZMK_IDLE_SLEEP_TIMEOUT (default 15 min) without input.
+# Never while on USB power. The key that wakes the board is not sent.
+CONFIG_ZMK_SLEEP=y
 
 # RGB Underglow
 CONFIG_ZMK_RGB_UNDERGLOW=y

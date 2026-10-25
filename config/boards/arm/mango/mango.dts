@@ -77,6 +77,8 @@
 	kscan0: kscan {
 		compatible = "zmk,kscan-gpio-matrix";
 		// label = "KSCAN";
+		// Lets a keypress wake the board from deep sleep (CONFIG_ZMK_SLEEP)
+		wakeup-source;
 
 		diode-direction = "col2row";
 		row-gpios
