@@ -5,6 +5,7 @@ if(CONFIG_ZMK_DISPLAY)
   target_sources_ifdef(CONFIG_CUSTOM_WIDGET_PROFILE_STATUS app PRIVATE widgets/profile_status.c)
   target_sources_ifdef(CONFIG_CUSTOM_WIDGET_LAYER_STATUS app PRIVATE widgets/layer_status.c)
   target_sources_ifdef(CONFIG_CUSTOM_WIDGET_PET_STATUS app PRIVATE widgets/pet_status.c)
+  target_sources_ifdef(CONFIG_CUSTOM_WIDGET_SPLIT_BATTERY_STATUS app PRIVATE widgets/split_battery_status.c)
 
   add_subdirectory_ifdef(CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM  widgets/icons)
 endif()

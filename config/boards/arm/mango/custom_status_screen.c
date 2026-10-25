@@ -1,9 +1,34 @@
+#include <zephyr/kernel.h>
+
+// Simone's widgets and ZMK's built-in ones share struct names, so only include
+// the headers of the widgets that are enabled.
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_BATTERY_STATUS)
 #include "widgets/battery_status.h"
+#endif
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PERIPHERAL_STATUS)
 #include "widgets/peripheral_status.h"
+#endif
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_OUTPUT_STATUS)
 #include "widgets/output_status.h"
+#endif
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PROFILE_STATUS)
 #include "widgets/profile_status.h"
+#endif
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_LAYER_STATUS)
 #include "widgets/layer_status.h"
+#endif
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PET_STATUS)
 #include "widgets/pet_status.h"
+#endif
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_SPLIT_BATTERY_STATUS)
+#include "widgets/split_battery_status.h"
+#endif
+#if IS_ENABLED(CONFIG_ZMK_WIDGET_OUTPUT_STATUS)
+#include <zmk/display/widgets/output_status.h>
+#endif
+#if IS_ENABLED(CONFIG_ZMK_WIDGET_LAYER_STATUS)
+#include <zmk/display/widgets/layer_status.h>
+#endif
 #include "custom_status_screen.h"
 
 #include <zephyr/logging/log.h>
@@ -37,6 +62,18 @@ static struct zmk_widget_peripheral_status peripheral_status_widget;
 static struct zmk_widget_pet_status pet_status_widget;
 #endif
 
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_SPLIT_BATTERY_STATUS)
+static struct zmk_widget_split_battery_status split_battery_status_widget;
+#endif
+
+#if IS_ENABLED(CONFIG_ZMK_WIDGET_OUTPUT_STATUS)
+static struct zmk_widget_output_status zmk_output_status_widget;
+#endif
+
+#if IS_ENABLED(CONFIG_ZMK_WIDGET_LAYER_STATUS)
+static struct zmk_widget_layer_status zmk_layer_status_widget;
+#endif
+
 lv_obj_t *zmk_display_status_screen() {
 
     lv_obj_t *screen;
@@ -65,6 +102,27 @@ lv_obj_t *zmk_display_status_screen() {
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PERIPHERAL_STATUS)
     zmk_widget_peripheral_status_init(&peripheral_status_widget, screen);
     lv_obj_align(zmk_widget_peripheral_status_obj(&peripheral_status_widget), LV_ALIGN_BOTTOM_LEFT, 0, 0);
+#endif
+
+#if IS_ENABLED(CONFIG_ZMK_WIDGET_OUTPUT_STATUS)
+    zmk_widget_output_status_init(&zmk_output_status_widget, screen);
+    lv_obj_set_style_text_font(zmk_widget_output_status_obj(&zmk_output_status_widget),
+                               &lv_font_montserrat_20, LV_PART_MAIN);
+    lv_obj_align(zmk_widget_output_status_obj(&zmk_output_status_widget), LV_ALIGN_TOP_LEFT, 0, 0);
+#endif
+
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_SPLIT_BATTERY_STATUS)
+    zmk_widget_split_battery_status_init(&split_battery_status_widget, screen);
+    lv_obj_align(zmk_widget_split_battery_status_obj(&split_battery_status_widget),
+                 LV_ALIGN_LEFT_MID, 0, 0);
+#endif
+
+#if IS_ENABLED(CONFIG_ZMK_WIDGET_LAYER_STATUS)
+    zmk_widget_layer_status_init(&zmk_layer_status_widget, screen);
+    lv_obj_set_style_text_font(zmk_widget_layer_status_obj(&zmk_layer_status_widget),
+                               &lv_font_montserrat_20, LV_PART_MAIN);
+    lv_obj_align(zmk_widget_layer_status_obj(&zmk_layer_status_widget), LV_ALIGN_BOTTOM_LEFT, 0,
+                 0);
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PET_STATUS)
