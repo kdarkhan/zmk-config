@@ -1,4 +1,13 @@
+# The right half is the central (connects to the computer, USB, status screen):
+# the left half's display connection is faulty, so only the right display is used.
 if BOARD_MANGO_LEFT
+
+	config ZMK_KEYBOARD_NAME
+	default "Mango left"
+
+endif # BOARD_MANGO_LEFT
+
+if BOARD_MANGO_RIGHT
 
 	config ZMK_KEYBOARD_NAME
 	default "Mango"
@@ -8,13 +17,6 @@ if BOARD_MANGO_LEFT
 
 	config ZMK_USB
 	default y
-
-endif # BOARD_MANGO_LEFT
-
-if BOARD_MANGO_RIGHT
-
-	config ZMK_KEYBOARD_NAME
-	default "Mango right"
 
 endif # BOARD_MANGO_RIGHT
 

@@ -20,30 +20,25 @@ CONFIG_ZMK_RGB_UNDERGLOW_BRT_START=10
 # BLE Power
 CONFIG_BT_CTLR_TX_PWR_PLUS_8=y
 
-# Mouse keys (mouse layer, right joystick scroll)
-CONFIG_ZMK_POINTING=y
-
 # These nice!nano clones need the internal RC clock: with the default 32 kHz
 # crystal setting the split link times out (reason 8) a few seconds after connecting.
 CONFIG_CLOCK_CONTROL_NRF_K32SRC_RC=y
 
 # Displays
-CONFIG_ZMK_DISPLAY=y
+# Off: the left display gets noise pixels / lines after a while on any screen.
+# Swapping panels showed the fault stays with the left board; reflow didn't fix it.
+CONFIG_ZMK_DISPLAY=n
 
 # Status screen: ZMK's built-in one. To use Simone's custom screen instead, set
 # BUILT_IN=n / CUSTOM=y, turn off the ZMK_WIDGET_* lines and turn on the
 # CUSTOM_WIDGET_* lines (see git history for the previous values).
 CONFIG_ZMK_DISPLAY_STATUS_SCREEN_BUILT_IN=y
 CONFIG_ZMK_WIDGET_BATTERY_STATUS=y
-CONFIG_ZMK_WIDGET_OUTPUT_STATUS=y
-CONFIG_ZMK_WIDGET_LAYER_STATUS=y
+CONFIG_ZMK_WIDGET_PERIPHERAL_STATUS=y
 
 CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM=n
 CONFIG_CUSTOM_WIDGET_BATTERY_STATUS=n
-CONFIG_CUSTOM_WIDGET_OUTPUT_STATUS=n
-CONFIG_CUSTOM_WIDGET_PROFILE_STATUS=n
-CONFIG_CUSTOM_WIDGET_LAYER_STATUS=n
-CONFIG_CUSTOM_WIDGET_PET_STATUS=n
+CONFIG_CUSTOM_WIDGET_PERIPHERAL_STATUS=n
 
 # Theme Mono
 CONFIG_LV_USE_THEME_MONO=n
@@ -66,5 +61,3 @@ CONFIG_FLASH_MAP=y
 
 CONFIG_SOC_SERIES_NRF52X=y
 CONFIG_SOC_NRF52840_QIAA=y
-
-CONFIG_ZMK_USB_LOGGING=y
