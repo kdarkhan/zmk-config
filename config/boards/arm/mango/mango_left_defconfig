@@ -14,6 +14,10 @@ CONFIG_WS2812_STRIP=y
 CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=n
 # Turn the LEDs off after CONFIG_ZMK_IDLE_TIMEOUT (default 30 s) without input
 CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y
+# Start off and let the saved state turn the LEDs on. With ON_START=y, ZMK v0.3
+# draws a first frame before loading settings, so LEDs saved as off light up
+# (frozen) after every power-up.
+CONFIG_ZMK_RGB_UNDERGLOW_ON_START=n
 CONFIG_ZMK_RGB_UNDERGLOW_EFF_START=3
 CONFIG_ZMK_RGB_UNDERGLOW_BRT_START=10
 

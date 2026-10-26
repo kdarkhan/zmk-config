@@ -13,6 +13,10 @@ CONFIG_WS2812_STRIP=y
 CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=n
 # Turn the LEDs off after CONFIG_ZMK_IDLE_TIMEOUT (default 30 s) without input
 CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y
+# Start off and let the saved state turn the LEDs on. With ON_START=y, ZMK v0.3
+# draws a first frame before loading settings, so LEDs saved as off light up
+# (frozen) after every power-up.
+CONFIG_ZMK_RGB_UNDERGLOW_ON_START=n
 CONFIG_ZMK_RGB_UNDERGLOW_EFF_START=3
 CONFIG_ZMK_RGB_UNDERGLOW_BRT_START=10
 
@@ -28,6 +32,9 @@ CONFIG_CLOCK_CONTROL_NRF_K32SRC_RC=y
 
 # Displays
 CONFIG_ZMK_DISPLAY=y
+# Stop display updates (and the pet animation) after CONFIG_ZMK_IDLE_TIMEOUT
+# without input; ZMK only enables this by default for OLEDs.
+CONFIG_ZMK_DISPLAY_BLANK_ON_IDLE=y
 
 # Status screen: custom_status_screen.c with ZMK's built-in output and layer
 # widgets, both halves' battery levels and Simone's pet. Don't enable a ZMK_WIDGET_*
