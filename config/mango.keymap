@@ -72,7 +72,7 @@
          * TAB/NUM  Q    W    E    R    T        Y    U    I    O    P    \/MOUSE
          * ESC/SYM  A⇧   S⌥   D⌃   F◆   G        H    J◆   K⌃   L⌥   ;⇧   '
          * LSHFT    Z    X    C    V    B        N    M    ,    .    /    RSHFT
-         *                   FN   SPC  GUI      BSPC ENT  DEL
+         *                   ALT  SPC  GUI      BSPC ENT  FN
          * joysticks: left = arrows, right = scroll (untested, directions may be swapped)
          */
         base_layer {
@@ -81,7 +81,7 @@
     &lt NUM TAB  &kp Q          &kp W         &kp E          &kp R         &kp T        &kp Y     &kp U        &kp I         &kp O         &kp P           &lt MOUSE BSLH
     &lt SYM ESC  &hml LSHFT A   &hml LALT S   &hml LCTRL D   &hml LGUI F   &kp G        &kp H     &hmr RGUI J  &hmr RCTRL K   &hmr RALT L   &hmr RSHFT SEMI &kp SQT
     &kp LSHFT    &kp Z          &kp X         &kp C          &kp V         &kp B        &kp N     &kp M        &kp COMMA      &kp DOT       &kp FSLH        &kp RSHFT
-                                              &mo FN         &kp SPACE     &kp LGUI     &kp BSPC  &kp RET      &kp DEL
+                                              &kp LALT       &kp SPACE     &kp LGUI     &kp BSPC  &kp RET      &mo FN
 
                  &kp LEFT       &kp UP        &kp RIGHT      &kp DOWN      &none        &none     &msc SCRL_RIGHT &msc SCRL_UP &msc SCRL_LEFT &msc SCRL_DOWN
             >;
@@ -125,20 +125,22 @@
         };
 
         /*
-         * FN (hold left outer thumb) - the Sofle's ADJ2, F-keys and keyboard controls
-         * TAB   INS  APP            RGB+ USB/BT         F7   F8   F9   F12
-         *       PSCR RGB  EFF  RGB- BTCLR               F4   F5   F6   F11
-         * BOOT  BT0  BT1  BT2  BT3  BT4                 F1   F2   F3   F10  BOOT
+         * FN (hold right outer thumb) - the Sofle's ADJ2, F-keys and keyboard controls.
+         * Keyboard controls are on the right (central) half, so BT profiles can be
+         * switched with one hand; F-keys are on the left for the other hand.
+         *       F7   F8   F9   F12           USB/BT RGB+      APP  INS  TAB
+         *       F4   F5   F6   F11           BTCLR  RGB- EFF  RGB  PSCR
+         * BOOT  F1   F2   F3   F10           BT0    BT1  BT2  BT3  BT4  BOOT
          */
         fn_layer {
             display-name = "FN";
             bindings = <
-    &kp TAB      &kp INS       &kp K_APP       &trans          &rgb_ug RGB_BRI &out OUT_TOG      &trans  &kp F7  &kp F8  &kp F9  &kp F12  &trans
-    &trans       &kp PSCRN     &rgb_ug RGB_TOG &rgb_ug RGB_EFF &rgb_ug RGB_BRD &bt BT_CLR        &trans  &kp F4  &kp F5  &kp F6  &kp F11  &trans
-    &bootloader  &bt BT_SEL 0  &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4      &trans  &kp F1  &kp F2  &kp F3  &kp F10  &bootloader
-                                               &trans          &trans          &trans            &trans  &trans  &trans
+    &trans       &kp F7  &kp F8  &kp F9  &kp F12  &trans        &out OUT_TOG  &rgb_ug RGB_BRI  &trans           &kp K_APP        &kp INS       &kp TAB
+    &trans       &kp F4  &kp F5  &kp F6  &kp F11  &trans        &bt BT_CLR    &rgb_ug RGB_BRD  &rgb_ug RGB_EFF  &rgb_ug RGB_TOG  &kp PSCRN     &trans
+    &bootloader  &kp F1  &kp F2  &kp F3  &kp F10  &trans        &bt BT_SEL 0  &bt BT_SEL 1     &bt BT_SEL 2     &bt BT_SEL 3     &bt BT_SEL 4  &bootloader
+                                 &trans  &trans   &trans        &trans        &trans           &trans
 
-                 &trans        &trans          &trans          &trans          &trans            &trans  &trans  &trans  &trans  &trans
+                 &trans  &trans  &trans  &trans   &trans        &trans        &trans           &trans           &trans           &trans
             >;
         };
 
