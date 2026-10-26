@@ -9,9 +9,10 @@ CONFIG_ZMK_SLEEP=y
 # RGB Underglow
 CONFIG_ZMK_RGB_UNDERGLOW=y
 CONFIG_WS2812_STRIP=y
-# Keep EXT power on when the LEDs turn off: the displays seem to be powered
-# from it too (left display stayed blank after RGB_TOG off/on until a restart).
-CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=n
+# Cut EXT power (the nice!nano VCC output) whenever the LEDs turn off, including
+# the idle auto-off. Only the LEDs use it on this half because no display is
+# installed; the right half keeps it on for its display.
+CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=y
 # Turn the LEDs off after CONFIG_ZMK_IDLE_TIMEOUT (default 30 s) without input
 CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y
 # Start off and let the saved state turn the LEDs on. With ON_START=y, ZMK v0.3
@@ -29,7 +30,7 @@ CONFIG_BT_CTLR_TX_PWR_PLUS_8=y
 CONFIG_CLOCK_CONTROL_NRF_K32SRC_RC=y
 
 # Displays
-# Off: the left display gets noise pixels / lines after a while on any screen.
+# Off and no longer installed: the left display got noise pixels / lines after a while on any screen.
 # Swapping panels showed the fault stays with the left board; reflow didn't fix it.
 CONFIG_ZMK_DISPLAY=n
 

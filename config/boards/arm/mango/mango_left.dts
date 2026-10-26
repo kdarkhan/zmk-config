@@ -1,5 +1,10 @@
 #include "mango.dts"
 
+// The left clone turns VCC on with P0.13 high, like a genuine nice!nano v2
+&vcc_switch {
+    control-gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
+};
+
 &kscan0 {
     col-gpios
         = <&pro_micro 21 GPIO_ACTIVE_HIGH> // col1 in the schematic

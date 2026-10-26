@@ -18,10 +18,14 @@
 		zmk,underglow = &led_strip;
 	};
 
-	ext-power {
+	// P0.13 switches the nice!nano VCC output, which feeds both the LEDs and the
+	// display. On the right clone low turns VCC on (on a genuine v2 it is high);
+	// mango_left.dts overrides the polarity for the left one.
+	// Deep sleep turns it off, otherwise the LEDs draw ~20 mA while asleep.
+	// The node name is what &ext_power looks up, so it must stay EXT_POWER.
+	vcc_switch: EXT_POWER {
 		compatible = "zmk,ext-power-generic";
-		// label = "EXT_POWER";
-		control-gpios = <&gpio0 8 GPIO_ACTIVE_HIGH>; //this was 13 by default on the n!n 
+		control-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
 		init-delay-ms = <50>;
 	};
 
@@ -147,6 +151,14 @@
 
 &gpio0 {
 	status = "okay";
+
+	// P0.08 used to be the ext-power pin and was always driven high. Its job on
+	// the PCB is unknown (maybe the Q1/Q2 MOSFET), so keep it high.
+	p0_08_high {
+		gpio-hog;
+		gpios = <8 GPIO_ACTIVE_HIGH>;
+		output-high;
+	};
 };
 
 &gpio1 {
