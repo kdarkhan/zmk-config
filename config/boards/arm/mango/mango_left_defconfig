@@ -5,16 +5,21 @@ CONFIG_PINCTRL=y
 # Deep Sleep after CONFIG_ZMK_IDLE_SLEEP_TIMEOUT (default 15 min) without input.
 # Never while on USB power. The key that wakes the board is not sent.
 CONFIG_ZMK_SLEEP=y
+# 5 min instead of the default 15, same as the right half
+CONFIG_ZMK_IDLE_SLEEP_TIMEOUT=300000
 
 # RGB Underglow
 CONFIG_ZMK_RGB_UNDERGLOW=y
 CONFIG_WS2812_STRIP=y
-# Cut EXT power (the nice!nano VCC output) whenever the LEDs turn off, including
-# the idle auto-off. Only the LEDs use it on this half because no display is
-# installed; the right half keeps it on for its display.
+# Cut EXT power (the nice!nano VCC output) whenever the LEDs are toggled off.
+# Only the LEDs use it on this half because no display is installed; the right
+# half keeps it on for its display.
 CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=y
-# Turn the LEDs off after CONFIG_ZMK_IDLE_TIMEOUT (default 30 s) without input
-CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y
+# Cut VCC after CONFIG_ZMK_IDLE_TIMEOUT (30 s) without input on this half
+# (idle_power.c), without ZMK's AUTO_OFF_IDLE, which saves the LEDs as off and
+# so leaves them off after waking from deep sleep.
+CONFIG_MANGO_IDLE_VCC_OFF=y
+CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=n
 # Start off and let the saved state turn the LEDs on. With ON_START=y, ZMK v0.3
 # draws a first frame before loading settings, so LEDs saved as off light up
 # (frozen) after every power-up.

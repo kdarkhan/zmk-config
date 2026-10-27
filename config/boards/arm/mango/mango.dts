@@ -19,13 +19,12 @@
 	};
 
 	// P0.13 switches the nice!nano VCC output, which feeds both the LEDs and the
-	// display. On the right clone low turns VCC on (on a genuine v2 it is high);
-	// mango_left.dts overrides the polarity for the left one.
+	// display. High turns VCC on, on both clones (like a genuine v2).
 	// Deep sleep turns it off, otherwise the LEDs draw ~20 mA while asleep.
 	// The node name is what &ext_power looks up, so it must stay EXT_POWER.
 	vcc_switch: EXT_POWER {
 		compatible = "zmk,ext-power-generic";
-		control-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
+		control-gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
 		init-delay-ms = <50>;
 	};
 

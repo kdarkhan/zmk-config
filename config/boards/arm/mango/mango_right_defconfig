@@ -4,16 +4,22 @@ CONFIG_PINCTRL=y
 # Deep Sleep after CONFIG_ZMK_IDLE_SLEEP_TIMEOUT (default 15 min) without input.
 # Never while on USB power. The key that wakes the board is not sent.
 CONFIG_ZMK_SLEEP=y
+# 5 min instead of the default 15: on the right half the LEDs draw power while
+# awake even when dark (see CONFIG_MANGO_IDLE_VCC_OFF).
+CONFIG_ZMK_IDLE_SLEEP_TIMEOUT=300000
 
 # RGB Underglow
 CONFIG_ZMK_RGB_UNDERGLOW=y
 CONFIG_WS2812_STRIP=y
 # Keep EXT power on when the LEDs turn off: it is the nice!nano VCC output, which
-# powers the display too (blank after RGB_TOG off/on until a restart). It is
-# only cut in deep sleep.
+# powers the display too (blank after RGB_TOG off/on until a restart).
 CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=n
-# Turn the LEDs off after CONFIG_ZMK_IDLE_TIMEOUT (default 30 s) without input
-CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y
+# Instead cut it after CONFIG_ZMK_IDLE_TIMEOUT (30 s) without input and redraw
+# the display on the next keypress (idle_power.c). Deep sleep cuts it too.
+# This also turns the LEDs off while idle, without ZMK's AUTO_OFF_IDLE, which
+# saves the LEDs as off and so leaves them off after waking from deep sleep.
+CONFIG_MANGO_IDLE_VCC_OFF=y
+CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=n
 # Start off and let the saved state turn the LEDs on. With ON_START=y, ZMK v0.3
 # draws a first frame before loading settings, so LEDs saved as off light up
 # (frozen) after every power-up.
@@ -75,5 +81,3 @@ CONFIG_FLASH_MAP=y
 
 CONFIG_SOC_SERIES_NRF52X=y
 CONFIG_SOC_NRF52840_QIAA=y
-
-CONFIG_ZMK_USB_LOGGING=y
